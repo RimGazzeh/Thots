@@ -16,4 +16,9 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <string name="info_message_error_network">Please check you internet connection</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+
 </resources>

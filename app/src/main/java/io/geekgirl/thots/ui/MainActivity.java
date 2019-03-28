@@ -1,8 +1,7 @@
 package io.geekgirl.thots.ui;
-
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import io.geekgirl.thots.R;
 
 public class MainActivity extends AppCompatActivity {
