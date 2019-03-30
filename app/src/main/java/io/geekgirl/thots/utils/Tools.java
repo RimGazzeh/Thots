@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialog;
@@ -30,7 +31,7 @@ public class Tools {
         if (activeNetworkInfo != null && activeNetworkInfo.isConnected()) {
             return true;
         } else {
-           // showAlert(R.string.info_message_error_network, activity, null, false, false, 0);
+            Toast.makeText(activity, activity.getString(R.string.info_message_error_network), Toast.LENGTH_SHORT).show();
             return false;
         }
     }
