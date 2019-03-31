@@ -14,6 +14,7 @@ public class Prefs {
     public static final String CURRENT_USER = "user";
     public static final String USER_UID = "user_uid";
     public static final String USER_EMAIL = "user_email";
+    public static final String USER_USERNAME = "user_username";
     private static final String TAG = Prefs.class.getSimpleName();
 
     public static boolean hasPref(String key, Context ctx) {

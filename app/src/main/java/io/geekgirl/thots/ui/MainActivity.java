@@ -28,6 +28,8 @@ import androidx.lifecycle.ViewModelProviders;
 import io.geekgirl.thots.R;
 import io.geekgirl.thots.manager.events.UserLocationEvent;
 import io.geekgirl.thots.manager.geofence.GeofenceStore;
+import io.geekgirl.thots.models.User;
+import io.geekgirl.thots.utils.Constants;
 import io.geekgirl.thots.utils.DebugLog;
 import io.geekgirl.thots.utils.Tools;
 import io.geekgirl.thots.viewModel.UserViewModel;
@@ -42,10 +44,10 @@ import static android.location.GpsStatus.GPS_EVENT_STOPPED;
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
 
     protected GoogleApiClient mGoogleApiClient;
-    private  GeofenceStore mGeofenceStore;
+    private GeofenceStore mGeofenceStore;
     private ArrayList<Geofence> mGeofences;
     private UserViewModel userViewModel;
-
+    private User mUser;
 
 
     @Override
@@ -53,10 +55,19 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+        updateUser();
         buildGoogleApiClient();
     }
 
-    public void initGeoLocation() {
+    private void updateUser() {
+        if (getIntent().hasExtra(Constants.SIGNED_USER)) {
+            mUser = getIntent().getParcelableExtra(Constants.SIGNED_USER);
+        }else {
+
+        }
+    }
+
+    private void initGeoLocation() {
         mGeofences = new ArrayList<>();
         mGeofenceStore = new GeofenceStore(this, mGeofences);
     }
@@ -126,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                         mGeofenceStore.initLocation();
                     } else {
                         if (mGeofenceStore == null) {
-                           Toast.makeText(MainActivity.this, "mGeofenceStore is null", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "mGeofenceStore is null", Toast.LENGTH_SHORT).show();
                         }
                     }
                     break;
@@ -146,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventBusListener(UserLocationEvent event){
+    public void onEventBusListener(UserLocationEvent event) {
         DebugLog.d("UserLocationEvent triggered");
         userViewModel.updateLocation(event.getLocation());
     }

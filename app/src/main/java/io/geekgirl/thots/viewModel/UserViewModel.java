@@ -4,8 +4,10 @@ import android.app.Application;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +31,9 @@ public class UserViewModel extends AndroidViewModel {
 
     private static String mUserUID;
     private FirebaseDatabase mFirebaseDatabase;
-    private static  DatabaseReference USERS_REF ;
+    private static DatabaseReference USERS_REF;
 
-    private FirebaseQueryLiveData mLiveData ;
+    private FirebaseQueryLiveData mLiveData;
     private List<User> mUsers = new ArrayList<>();
 
     private final MutableLiveData<Boolean> userUpdatedIsSuccessful = new MutableLiveData<>();
@@ -73,9 +75,26 @@ public class UserViewModel extends AndroidViewModel {
         Task uploadTask = mFirebaseDatabase
                 .getReference()
                 .child(Constants.USER_PATH)
-                .child(mUserUID)
+                .child(user.getUid())
                 .setValue(user);
         uploadTask.addOnSuccessListener(o -> userUpdatedIsSuccessful.setValue(true));
+    }
+
+    public void checkUser(User user) {
+        mFirebaseDatabase.getReference().child(Constants.USER_PATH)
+                .child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    createAndSendToDataBase(user);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void updateLocation(Location location) {
@@ -83,6 +102,7 @@ public class UserViewModel extends AndroidViewModel {
                 .getReference()
                 .child(Constants.USER_PATH)
                 .child(mUserUID)
+                .child(Constants.USER_LOCATION_PATH)
                 .setValue(location);
         uploadTask.addOnSuccessListener(o -> userUpdatedIsSuccessful.setValue(true));
     }

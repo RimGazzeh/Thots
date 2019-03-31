@@ -30,6 +30,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import io.geekgirl.thots.R;
@@ -38,6 +39,7 @@ import io.geekgirl.thots.models.User;
 import io.geekgirl.thots.utils.Constants;
 import io.geekgirl.thots.utils.Prefs;
 import io.geekgirl.thots.utils.Tools;
+import io.geekgirl.thots.viewModel.UserViewModel;
 
 
 /**
@@ -52,6 +54,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
     private NavController navController;
     private static final int RC_SIGN_IN = 9001;
     private GoogleSignInClient mGoogleSignInClient;
+    private UserViewModel userViewModel;
 
 
     public SignInFragment() {
@@ -72,6 +75,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(activity, gso);
+        userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
     }
 
@@ -269,9 +273,10 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
 
 
     private void onSuccessCnx(FirebaseUser firebaseUser) {
-        User user = new User(firebaseUser.getUid(), firebaseUser.getDisplayName(), firebaseUser.getEmail(), firebaseUser.getDisplayName());
+        User user = new User(firebaseUser.getUid(), firebaseUser.getDisplayName(), firebaseUser.getEmail(), firebaseUser.getPhotoUrl().toString());
         Prefs.setPref(Prefs.USER_UID, firebaseUser.getUid(), activity);
         Prefs.setPref(Prefs.USER_EMAIL, firebaseUser.getEmail(), activity);
+        userViewModel.checkUser(user);
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.SIGNED_USER, user);
         navController.navigate(R.id.action_SignInFragment_to_mainActivity, bundle);

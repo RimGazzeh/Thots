@@ -96,6 +96,7 @@ public class User implements Parcelable {
         dest.writeString(this.email);
         dest.writeString(this.photoUrl);
         dest.writeString(this.dataOfBirth);
+        dest.writeParcelable(this.location, flags);
     }
 
     protected User(Parcel in) {
@@ -104,9 +105,10 @@ public class User implements Parcelable {
         this.email = in.readString();
         this.photoUrl = in.readString();
         this.dataOfBirth = in.readString();
+        this.location = in.readParcelable(Location.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+    public static final Creator<User> CREATOR = new Creator<User>() {
         @Override
         public User createFromParcel(Parcel source) {
             return new User(source);
