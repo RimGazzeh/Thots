@@ -72,6 +72,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(activity, gso);
+
     }
 
     @Override
@@ -86,17 +87,18 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
+        setEvents();
+    }
+    private void setEvents(){
         binding.emailSignInButton.setOnClickListener(this);
         binding.emailSignUpButton.setOnClickListener(this);
         binding.googleSignInButton.setOnClickListener(this);
-
     }
 
     @Override
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
 
     }
 
@@ -269,9 +271,10 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
     private void onSuccessCnx(FirebaseUser firebaseUser) {
         User user = new User(firebaseUser.getUid(), firebaseUser.getDisplayName(), firebaseUser.getEmail(), firebaseUser.getDisplayName());
         Prefs.setPref(Prefs.USER_UID, firebaseUser.getUid(), activity);
+        Prefs.setPref(Prefs.USER_EMAIL, firebaseUser.getEmail(), activity);
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.SIGNED_USER, user);
-        navController.navigate(R.id.action_SignInFragment_to_HomeFragment, bundle);
+        navController.navigate(R.id.action_SignInFragment_to_mainActivity, bundle);
     }
 
 
@@ -304,7 +307,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
             attemptAuth(true);
         } else if (v.getId() == binding.emailSignUpButton.getId()) {
             attemptAuth(false);
-        }else if(v.getId() == binding.googleSignInButton.getId()){
+        } else if (v.getId() == binding.googleSignInButton.getId()) {
             signInWithGoogle();
         }
     }

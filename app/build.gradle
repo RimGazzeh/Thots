@@ -28,19 +28,24 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "androidx.appcompat:appcompat:$project.ext.supportLibraryVersion"
+    implementation "androidx.appcompat:appcompat:$project.ext.supportLibraryAppcompatVersion"
     implementation "androidx.constraintlayout:constraintlayout:$project.ext.constraintLayoutVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel:$project.ext.lifecycleVersion"
     implementation "androidx.navigation:navigation-fragment:$project.ext.lifecycleVersion"
     implementation "androidx.navigation:navigation-ui:$project.ext.lifecycleVersion"
+    implementation "org.greenrobot:eventbus:$project.ext.eventBusVersion"
+
     implementation "com.google.firebase:firebase-auth:$project.ext.firebaseAuthVersion"
     implementation "com.google.android.gms:play-services-auth:$project.ext.playServiceVersion"
     implementation "com.google.firebase:firebase-core:$project.ext.firebaseCoreVersion"
-
     implementation "com.google.firebase:firebase-database:$project.ext.firebaseDatabaseVersion"
+
+    implementation "com.google.android.gms:play-services-maps:$project.ext.playServiceMapVersion"
+    implementation "com.google.android.gms:play-services-location:$project.ext.playServiceLocationVersion"
 
     implementation "androidx.legacy:legacy-support-v4:$project.ext.supportLibraryVersion"
     implementation "com.google.android.material:material:$project.ext.supportLibraryVersion"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0-beta01'
     testImplementation "junit:junit:$project.ext.junitVersion"
     androidTestImplementation "com.android.support.test:runner:$project.ext.androidJunitRunnerVersion"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$project.ext.espressoVersion"

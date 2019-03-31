@@ -2,23 +2,18 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:startDestination="@id/SignInFragment"
+    app:startDestination="@id/HomeFragment"
     android:id="@+id/nav_graph">
-
-    <fragment
-        android:id="@+id/SignInFragment"
-        android:name="io.geekgirl.thots.ui.SignInFragment"
-        android:label="Blank"
-        tools:layout="@layout/fragment_sign_in" >
-        <action
-            android:id="@+id/action_SignInFragment_to_HomeFragment"
-            app:destination="@id/HomeFragment" />
-    </fragment>
 
     <fragment
         android:id="@+id/HomeFragment"
         android:name="io.geekgirl.thots.ui.HomeFragment"
         android:label="Blank"
         tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/nearByUsersFragment"
+        android:name="io.geekgirl.thots.ui.NearByUsersFragment"
+        android:label="fragment_near_by_users"
+        tools:layout="@layout/fragment_near_by_users" />
 
 </navigation>
