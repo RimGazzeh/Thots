@@ -13,6 +13,7 @@ public class User implements Parcelable {
     private String email;
     private String photoUrl;
     private String dataOfBirth;
+    private Location location;
 
     public User() {
     }
@@ -62,6 +63,14 @@ public class User implements Parcelable {
 
     public void setDataOfBirth(String dataOfBirth) {
         this.dataOfBirth = dataOfBirth;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     @Override

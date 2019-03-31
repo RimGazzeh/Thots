@@ -30,7 +30,8 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "androidx.appcompat:appcompat:$project.ext.supportLibraryAppcompatVersion"
     implementation "androidx.constraintlayout:constraintlayout:$project.ext.constraintLayoutVersion"
-    implementation "androidx.lifecycle:lifecycle-viewmodel:$project.ext.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-extensions:$project.ext.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$project.ext.lifecycleVersion"
     implementation "androidx.navigation:navigation-fragment:$project.ext.lifecycleVersion"
     implementation "androidx.navigation:navigation-ui:$project.ext.lifecycleVersion"
     implementation "org.greenrobot:eventbus:$project.ext.eventBusVersion"
