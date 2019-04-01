@@ -43,6 +43,13 @@
     <string name="geofence_transition_entered">Entered</string>
     <string name="geofence_transition_exited">Exited</string>
     <string name="unknown_geofence_transition">Unknown Transition</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="no_msgs">No messages</string>
+    <string name="user_info">Info</string>
+    <string name="user_job">Job:</string>
+    <string name="user_age">Age:</string>
+    <string name="user_phone">Phone:</string>
 
 
 </resources>

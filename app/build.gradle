@@ -30,6 +30,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "androidx.appcompat:appcompat:$project.ext.supportLibraryAppcompatVersion"
     implementation "androidx.constraintlayout:constraintlayout:$project.ext.constraintLayoutVersion"
+    implementation "com.squareup.picasso:picasso:$project.ext.picassoVersion"
     implementation "androidx.lifecycle:lifecycle-extensions:$project.ext.lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-common-java8:$project.ext.lifecycleVersion"
     implementation "androidx.navigation:navigation-fragment:$project.ext.lifecycleVersion"

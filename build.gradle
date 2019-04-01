@@ -30,6 +30,7 @@ allprojects {
         supportLibraryVersion = "1.0.0"
         supportLibraryAppcompatVersion = "1.0.2"
         constraintLayoutVersion = "1.1.2"
+        picassoVersion = "2.71828"
         lifecycleVersion = "2.0.0"
         eventBusVersion = "3.1.1"
 
