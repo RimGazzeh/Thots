@@ -3,6 +3,7 @@ package io.geekgirl.thots.manager.geofence;
 import android.content.Context;
 import android.content.res.Resources;
 
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.location.GeofenceStatusCodes;
 
 import io.geekgirl.thots.R;
@@ -13,6 +14,18 @@ import io.geekgirl.thots.R;
 
 public class GeofenceErrorMessages {
     private GeofenceErrorMessages() {}
+
+    /**
+     * Returns the error string for a geofencing exception.
+     */
+    public static String getErrorString(Context context, Exception e) {
+        if (e instanceof ApiException) {
+            return getErrorString(context, ((ApiException) e).getStatusCode());
+        } else {
+            return context.getResources().getString(R.string.unknown_geofence_error);
+        }
+    }
+
     public static String getErrorString(Context context, int errorCode) {
         Resources mResources = context.getResources();
         switch (errorCode) {

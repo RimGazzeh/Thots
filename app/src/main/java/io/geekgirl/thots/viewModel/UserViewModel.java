@@ -2,6 +2,7 @@ package io.geekgirl.thots.viewModel;
 
 import android.app.Application;
 
+import com.google.android.gms.location.Geofence;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,6 +36,7 @@ public class UserViewModel extends AndroidViewModel {
 
     private FirebaseQueryLiveData mLiveData;
     private List<User> mUsers = new ArrayList<>();
+    private List<Geofence> mGeofences = new ArrayList<>();
 
     private final MutableLiveData<Boolean> userUpdatedIsSuccessful = new MutableLiveData<>();
 
@@ -51,7 +53,8 @@ public class UserViewModel extends AndroidViewModel {
         mLiveData = new FirebaseQueryLiveData(USERS_REF);
     }
 
-    private class Deserializer implements Function<DataSnapshot, List<User>> {
+    /***********************************************************************************************************/
+    private class UserDeserializer implements Function<DataSnapshot, List<User>> {
         @Override
         public List<User> apply(DataSnapshot dataSnapshot) {
             mUsers.clear();
@@ -64,10 +67,42 @@ public class UserViewModel extends AndroidViewModel {
         }
     }
 
+    private class GeofencesDeserializer implements Function<DataSnapshot, List<Geofence>> {
+        @Override
+        public List<Geofence> apply(DataSnapshot dataSnapshot) {
+            mGeofences.clear();
+            for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                User user = snap.getValue(User.class);
+                user.setUid(snap.getKey());
+                if (!user.getUid().equals(mUserUID)) {
+                    Geofence geofence = new Geofence.Builder().setRequestId(user.getUid()).setCircularRegion(
+                            user.getLocation().getLatitude(),
+                            user.getLocation().getLongitude(),
+                            Constants.GEOFENCE_RADIUS_IN_METER
+                    ).setExpirationDuration(Geofence.NEVER_EXPIRE)
+                            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
+                                    Geofence.GEOFENCE_TRANSITION_EXIT)
+                            //it's must to set time in millis with dwell transition
+                            .build();
+                    mGeofences.add(geofence);
+                }
+            }
+            return mGeofences;
+        }
+    }
+
+    /***********************************************************************************************************/
+
     @NonNull
     public LiveData<List<User>> getUserLiveData() {
-        LiveData<List<User>> memoLiveData = Transformations.map(mLiveData, new Deserializer());
-        return memoLiveData;
+        LiveData<List<User>> userLiveData = Transformations.map(mLiveData, new UserDeserializer());
+        return userLiveData;
+    }
+
+    @NonNull
+    public LiveData<List<Geofence>> getGeofencesLiveData() {
+        LiveData<List<Geofence>> geoLiveData = Transformations.map(mLiveData, new GeofencesDeserializer());
+        return geoLiveData;
     }
 
 

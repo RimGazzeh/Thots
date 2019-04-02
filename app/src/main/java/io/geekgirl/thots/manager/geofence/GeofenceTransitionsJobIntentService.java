@@ -16,11 +16,9 @@
 
 package io.geekgirl.thots.manager.geofence;
 
-import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
@@ -30,29 +28,34 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.JobIntentService;
 import io.geekgirl.thots.R;
 import io.geekgirl.thots.manager.events.NearbyUsersEvent;
 import io.geekgirl.thots.utils.DebugLog;
 
 
-public class GeofenceTransitionsIntentService extends IntentService {
+public class GeofenceTransitionsJobIntentService extends JobIntentService {
 
-    protected static final String TAG = "GeofenceTransitionsIS";
-    private List<String> userIdList ;
+    private List<String> userIdList;
+    private static final int JOB_ID = 573;
 
 
-    public GeofenceTransitionsIntentService() {
-        super(TAG);
+    /**
+     * Convenience method for enqueuing work in to this service.
+     */
+    public static void enqueueWork(Context context, Intent intent) {
+        enqueueWork(context, GeofenceTransitionsJobIntentService.class, JOB_ID, intent);
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        DebugLog.d("onCreated");
     }
 
-
     @Override
-    protected void onHandleIntent(Intent intent) {
+    protected void onHandleWork(@NonNull Intent intent) {
         GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
         if (geofencingEvent.hasError()) {
             String errorMessage = GeofenceErrorMessages.getErrorString(this,
@@ -60,38 +63,38 @@ public class GeofenceTransitionsIntentService extends IntentService {
             DebugLog.e(errorMessage);
             return;
         }
-        // Get the transition type.
+
+        DebugLog.d("onHandleWork");
         int geofenceTransition = geofencingEvent.getGeofenceTransition();
 
         // Test that the reported transition was of interest.
         if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER ||
                 geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
+
             // Get the geofences that were triggered. A single event can trigger multiple geofences.
             List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
 
             // Get the transition details as a String.
-            String geofenceTransitionDetails = getGeofenceTransitionDetails(
-                    this,
-                    geofenceTransition,
-                    triggeringGeofences
-            );
+            String geofenceTransitionDetails = getGeofenceTransitionDetails(geofenceTransition,
+                    triggeringGeofences);
 
+            // Send notification and log the transition details.
+            DebugLog.i(geofenceTransitionDetails);
         } else {
             // Log the error.
             DebugLog.e(getString(R.string.geofence_transition_invalid_type, geofenceTransition));
         }
     }
 
+
     /**
      * Gets transition details and returns them as a formatted string.
      *
-     * @param context             The app context.
      * @param geofenceTransition  The ID of the geofence transition.
      * @param triggeringGeofences The geofence(s) triggered.
      * @return The transition details formatted as String.
      */
     private String getGeofenceTransitionDetails(
-            Context context,
             int geofenceTransition,
             List<Geofence> triggeringGeofences) {
 
@@ -109,8 +112,8 @@ public class GeofenceTransitionsIntentService extends IntentService {
                 DebugLog.i("user Entred");
                 userIdList.add(geofence.getRequestId());
             } else if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
-                DebugLog.i( "user left");
-                if(userIdList.contains(geofence.getRequestId())){
+                DebugLog.i("user left");
+                if (userIdList.contains(geofence.getRequestId())) {
                     userIdList.remove(geofence.getRequestId());
                 }
             }
@@ -120,7 +123,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
         EventBus.getDefault().post(new NearbyUsersEvent(userIdList));
 
         String triggeringGeofencesIdsString = TextUtils.join(", ", triggeringGeofencesIdsList);
-        Log.i(TAG, "users triggered" + triggeringGeofencesIdsString);
+        DebugLog.i("users triggered" + triggeringGeofencesIdsString);
 
         return geofenceTransitionString + ": " + triggeringGeofencesIdsString;
     }

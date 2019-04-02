@@ -7,36 +7,35 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import io.geekgirl.thots.R;
 import io.geekgirl.thots.manager.events.UserLocationEvent;
 import io.geekgirl.thots.utils.Constants;
 import io.geekgirl.thots.utils.DebugLog;
 
 
-public class GeofenceStore implements ConnectionCallbacks,
-        OnConnectionFailedListener, ResultCallback<Status>, LocationListener {
+public class GeofenceBuilder implements ConnectionCallbacks,
+        OnConnectionFailedListener, LocationListener {
 
-    private final String TAG = this.getClass().getSimpleName();
 
     /**
      * Context
@@ -68,23 +67,21 @@ public class GeofenceStore implements ConnectionCallbacks,
      * Location Request object.
      */
     private LocationRequest mLocationRequest;
+    private GeofencingClient geofencingClient;
 
-    /**
-     * Constructs a new GeofenceStore.
-     *
-     * @param context   The context to use.
-     * @param geofences List of geofences to monitor.
-     */
-    public GeofenceStore(Activity context, ArrayList<Geofence> geofences) {
+
+    public GeofenceBuilder(Activity context){
         mContext = context;
-        mGeofences = new ArrayList<Geofence>(geofences);
-        //Toast.makeText(context, " ffgggggggggggg"+mGeofences.size(), Toast.LENGTH_SHORT).show();
-        mPendingIntent = null;
+        geofencingClient = LocationServices.getGeofencingClient(mContext);
 
+    }
+    public void setGeofencesList( List<Geofence> geofences) {
+        mGeofences = new ArrayList<>(geofences);
+        //Toast.makeText(context, " ffgggggggggggg"+mGeofences.size(), Toast.LENGTH_SHORT).show();
         // Build a new GoogleApiClient, specify that we want to use LocationServices
         // by adding the API to the client, specify the connection callbacks are in
         // this class as well as the OnConnectionFailed method.
-        mGoogleApiClient = new GoogleApiClient.Builder(context)
+        mGoogleApiClient = new GoogleApiClient.Builder(mContext)
                 .addApi(LocationServices.API).addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this).build();
 
@@ -93,7 +90,8 @@ public class GeofenceStore implements ConnectionCallbacks,
         // Define the LocationRequest.
         mLocationRequest = new LocationRequest();
         // We want a location update every 15 minutes // 1000 * 900 -- > 15 minutes
-        mLocationRequest.setInterval(1000 * 900);
+        //mLocationRequest.setInterval(1000 * 900);
+        mLocationRequest.setInterval(1000);
         // We want the location to be as accurate as possible.
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
@@ -101,23 +99,8 @@ public class GeofenceStore implements ConnectionCallbacks,
     }
 
     @Override
-    public void onResult(Status result) {
-        if (result.isSuccess()) {
-            Log.v(TAG, "Success!");
-        } else if (result.hasResolution()) {
-            // TODO Handle resolution
-        } else if (result.isCanceled()) {
-            Log.v(TAG, "Canceled");
-        } else if (result.isInterrupted()) {
-            Log.v(TAG, "Interrupted");
-        } else {
-
-        }
-    }
-
-    @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.v(TAG, "Connection failed.");
+        DebugLog.v("Connection failed.");
     }
 
     @Override
@@ -143,10 +126,53 @@ public class GeofenceStore implements ConnectionCallbacks,
                 Constants.REQUEST_ACCESS_LOCATION);
     }
 
+    /**
+     * Shows a {@link Snackbar}.
+     *
+     * @param mainTextStringId The id for the string resource for the Snackbar text.
+     * @param actionStringId   The text of the action item.
+     * @param listener         The listener associated with the Snackbar action.
+     */
+    public void showSnackbar(final int mainTextStringId, final int actionStringId,
+                              View.OnClickListener listener) {
+        Snackbar.make(
+                mContext.findViewById(android.R.id.content),
+                mContext.getString(mainTextStringId),
+                Snackbar.LENGTH_INDEFINITE)
+                .setAction(mContext.getString(actionStringId), listener).show();
+    }
+
+    public void requestPermissions() {
+        boolean shouldProvideRationale =
+                ActivityCompat.shouldShowRequestPermissionRationale(mContext,
+                        Manifest.permission.ACCESS_FINE_LOCATION);
+
+        // Provide an additional rationale to the user. This would happen if the user denied the
+        // request previously, but didn't check the "Don't ask again" checkbox.
+        if (shouldProvideRationale) {
+            DebugLog.i("Displaying permission rationale to provide additional context.");
+            showSnackbar(R.string.permission_rationale, android.R.string.ok,
+                    view -> {
+                        // Request permission
+                        ActivityCompat.requestPermissions(mContext,
+                                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                Constants.REQUEST_PERMISSIONS_REQUEST_CODE);
+                    });
+        } else {
+            DebugLog.i("Requesting permission");
+            // Request permission. It's possible this can be auto answered if device policy
+            // sets the permission in a given state or the user denied the permission
+            // previously and checked "Never ask again".
+            ActivityCompat.requestPermissions(mContext,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    Constants.REQUEST_PERMISSIONS_REQUEST_CODE);
+        }
+    }
+
     public void initLocation() {
         DebugLog.v("initLocation");
 
-        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -157,39 +183,34 @@ public class GeofenceStore implements ConnectionCallbacks,
             return;
         }
         DebugLog.v("initLocation okk");
-        LocationServices.FusedLocationApi.requestLocationUpdates(
-                mGoogleApiClient, mLocationRequest, this);
-
         if (mGeofences != null && !mGeofences.isEmpty()) {
+            DebugLog.v("adding geofences");
             mGeofencingRequest = new GeofencingRequest.Builder()
+                    .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
                     .addGeofences(mGeofences).build();
             mPendingIntent = createRequestPendingIntent();
             // Submitting the request to monitor geofences.
-            PendingResult<Status> pendingResult = LocationServices.GeofencingApi
-                    .addGeofences(mGoogleApiClient, mGeofencingRequest,
-                            mPendingIntent);
+            geofencingClient
+                    .addGeofences(mGeofencingRequest,
+                            mPendingIntent).addOnSuccessListener(aVoid -> DebugLog.v("Success")).addOnFailureListener(e -> DebugLog.v("Fail"));
 
 
             // Set the result callbacks listener to this class.
-            pendingResult.setResultCallback(this);
         }
     }
 
-    public void onRequestPermissionsResult(@NonNull int[] grantResults) {
-        // Check if the only required permission has been granted
-        if (grantResults.length == 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-            DebugLog.d("ACCESS_FINE_LOCATION && ACCESS_COARSE_LOCATION permission has now been granted.");
-            initLocation();
-
-        } else {
-            DebugLog.w("ACCESS_FINE_LOCATION && ACCESS_COARSE_LOCATION permission was NOT granted.");
-        }
+    /**
+     * Return the current state of the permissions needed.
+     */
+    public boolean checkPermissions() {
+        int permissionState = ActivityCompat.checkSelfPermission(mContext,
+                Manifest.permission.ACCESS_FINE_LOCATION);
+        return permissionState == PackageManager.PERMISSION_GRANTED;
     }
 
     @Override
     public void onConnectionSuspended(int cause) {
-        Log.v(TAG, "Connection suspended.");
+        DebugLog.v("Connection suspended.");
     }
 
     /**
@@ -200,12 +221,14 @@ public class GeofenceStore implements ConnectionCallbacks,
      * @return A PendingIntent that will handle geofence transitions.
      */
     private PendingIntent createRequestPendingIntent() {
-        if (mPendingIntent == null) {
-            Log.v(TAG, "Creating PendingIntent");
-            Intent intent = new Intent(mContext, GeofenceTransitionsIntentService.class);
-            mPendingIntent = PendingIntent.getService(mContext, 0, intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
+        if (mPendingIntent != null) {
+            return mPendingIntent;
         }
+
+        DebugLog.v("Creating PendingIntent");
+        Intent intent = new Intent(mContext, GeofenceBroadcastReceiver.class);
+        mPendingIntent = PendingIntent.getBroadcast(mContext, 0, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
         return mPendingIntent;
     }
@@ -213,7 +236,7 @@ public class GeofenceStore implements ConnectionCallbacks,
     @Override
     public void onLocationChanged(Location location) {
 
-        Log.v(TAG, "Location Information\n"
+        DebugLog.v("Location Information\n"
                 + "==========\n"
                 + "Provider:\t" + location.getProvider() + "\n"
                 + "Lat & Long:\t" + location.getLatitude() + ", "

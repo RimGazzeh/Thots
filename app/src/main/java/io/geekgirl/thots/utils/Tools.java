@@ -1,6 +1,7 @@
 package io.geekgirl.thots.utils;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
@@ -34,6 +35,18 @@ public class Tools {
             Toast.makeText(activity, activity.getString(R.string.info_message_error_network), Toast.LENGTH_SHORT).show();
             return false;
         }
+    }
+
+    public static boolean isMyServiceRunning(Context context, Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                DebugLog.d(serviceClass.getName() + " is running");
+                return true;
+            }
+        }
+        DebugLog.d(serviceClass.getName() + " not running");
+        return false;
     }
 
     public static void showAlert(int message_id, final Activity activity, final Runnable runnable, boolean showCancel, boolean showTitle, int title) {

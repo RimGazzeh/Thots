@@ -12,6 +12,7 @@ import org.greenrobot.eventbus.Subscribe;
 import androidx.fragment.app.Fragment;
 import io.geekgirl.thots.R;
 import io.geekgirl.thots.manager.events.NearbyUsersEvent;
+import io.geekgirl.thots.utils.DebugLog;
 
 
 /**
@@ -47,7 +48,7 @@ public class NearByUsersFragment extends Fragment {
 
     @Subscribe
     public void onEventBusListener(NearbyUsersEvent event){
-
+        DebugLog.d(event.toString());
     }
 
 }
