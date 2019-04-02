@@ -32,6 +32,8 @@
     <string name="info_no_user_nearby">No users nearby.</string>
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
+    <string name="info_msg_send_success">Sent Successfully</string>
+    <string name="info_msg_send_error">Error Msg not Sent</string>
 
     <string name="geofence_not_available">Geofence service is not available now</string>
     <string name="geofence_too_many_geofences">Your app has registered too many geofences</string>
@@ -57,6 +59,7 @@
     <string name="user_job">Job:</string>
     <string name="user_age">Age:</string>
     <string name="user_phone">Phone:</string>
+    <string name="message">Message</string>
 
 
 </resources>

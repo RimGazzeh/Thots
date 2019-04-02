@@ -8,14 +8,15 @@ import android.os.Parcelable;
  */
 public class Message implements IMessage, Parcelable {
     private String id;
+    private String uidRecipient;
     private String uidSender;
     private String message;
 
     public Message() {
     }
 
-    public Message(String id, String uidSender, String message) {
-        this.id = id;
+    public Message(String uidRecipient, String uidSender, String message) {
+        this.uidRecipient = uidRecipient;
         this.uidSender = uidSender;
         this.message = message;
     }

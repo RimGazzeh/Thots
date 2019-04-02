@@ -58,6 +58,11 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
         public UserViewHolder(@NonNull ItemUserBinding binding) {
             super(binding.getRoot());
             itemUserBinding = binding;
+            itemUserBinding.itemContainer.setOnClickListener(v -> {
+                if(mOnUerClickListener!=null){
+                    mOnUerClickListener.onUserClick(getAdapterPosition());
+                }
+            });
         }
     }
 }

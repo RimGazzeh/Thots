@@ -5,6 +5,7 @@ package io.geekgirl.thots.utils;
  */
 public class Constants {
     public static final String SIGNED_USER = "signed_user";
+    public static final String RECIPIENT_USER = "recipient_user";
     public static final int REQUEST_ACCESS_LOCATION = 123;
     public static final int GEOFENCE_RADIUS_IN_METER = 1000;
     public static final long GEOFENCE_EXPIRATION_IN_HOURS = 8;
@@ -17,5 +18,6 @@ public class Constants {
      * Firebase constants
       */
     public static final String USER_PATH = "user";
+    public static final String MESSAGE_PATH = "message";
     public static final String USER_LOCATION_PATH = "location";
 }

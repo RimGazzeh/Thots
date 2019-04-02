@@ -20,6 +20,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,13 +30,14 @@ import io.geekgirl.thots.databinding.FragmentNearByUsersBinding;
 import io.geekgirl.thots.manager.events.NearbyUsersEvent;
 import io.geekgirl.thots.models.User;
 import io.geekgirl.thots.ui.adapters.UsersAdapter;
+import io.geekgirl.thots.utils.Constants;
 import io.geekgirl.thots.viewModel.UserViewModel;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NearByUsersFragment extends Fragment {
+public class NearByUsersFragment extends Fragment implements UsersAdapter.OnUerClickListener {
 
     private UserViewModel mUserViewModel;
     private MutableLiveData<List<User>> listMutableLiveData;
@@ -42,6 +45,7 @@ public class NearByUsersFragment extends Fragment {
     private FragmentNearByUsersBinding mBinding;
     private Activity mActivity;
     private List<User> mUsersList = new ArrayList<>();
+    private NavController navController;
 
     public NearByUsersFragment() {
         // Required empty public constructor
@@ -66,6 +70,7 @@ public class NearByUsersFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
         mBinding.usersNearbyProgress.setVisibility(View.VISIBLE);
         mBinding.usersNearbyVoid.setVisibility(View.GONE);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mActivity);
@@ -73,6 +78,7 @@ public class NearByUsersFragment extends Fragment {
         mBinding.usersNearbyList.setItemAnimator(new DefaultItemAnimator());
         mBinding.usersNearbyList.setHasFixedSize(true);
         mUsersAdapter = new UsersAdapter();
+        mUsersAdapter.setOnUerClickListener(this);
         mBinding.usersNearbyList.setAdapter(mUsersAdapter);
         mBinding.usersNearbyList.setVisibility(View.GONE);
     }
@@ -100,24 +106,44 @@ public class NearByUsersFragment extends Fragment {
         }
     }
 
+    private void setUsersAdapter() {
+        mBinding.usersNearbyProgress.setVisibility(View.GONE);
+        if (mUsersList != null && !mUsersList.isEmpty()) {
+            resultUI(false);
+            mUsersAdapter.setUsersList(mUsersList);
+        } else {
+            resultUI(true);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setUsersAdapter();
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventBusListener(NearbyUsersEvent event) {
         List<String> usersIds = event.getUsersId();
         if (usersIds != null && !usersIds.isEmpty()) {
             mUserViewModel.getUserByUID(usersIds).observe(this, users -> {
-                mBinding.usersNearbyProgress.setVisibility(View.GONE);
                 mUsersList = users;
-                if (mUsersList != null && !mUsersList.isEmpty()) {
-                    resultUI(false);
-                    mUsersAdapter.setUsersList(users);
-                } else {
-                    resultUI(true);
-                }
+                setUsersAdapter();
             });
         } else {
             mBinding.usersNearbyProgress.setVisibility(View.GONE);
             resultUI(true);
 
         }
+    }
+
+    @Override
+    public void onUserClick(int position) {
+        if (mUsersList != null && !mUsersList.isEmpty() && mUsersList.size() > position) {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(Constants.RECIPIENT_USER, mUsersList.get(position));
+            navController.navigate(R.id.action_nearByUsersFragment_to_messageDetailFragment, bundle);
+        }
+
     }
 }
