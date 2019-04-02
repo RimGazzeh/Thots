@@ -29,6 +29,7 @@
     <string name="info_message_auth_failed">Authentication failed.</string>
     <string name="info_message_create_account_failed">Creation account failed.</string>
     <string name="info_message_create_account_success">Creation account Success.</string>
+    <string name="info_no_user_nearby">No users nearby.</string>
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
 

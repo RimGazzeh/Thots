@@ -16,10 +16,10 @@ import io.geekgirl.thots.models.IUser;
  * Created by Rim Gazzah on 01/04/19
  */
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHolder> {
-    private List<IUser> mUsersList;
+    private List<? extends IUser> mUsersList;
     private OnUerClickListener mOnUerClickListener;
 
-    public void setUsersList(List<IUser> usersList) {
+    public void setUsersList(List<? extends IUser> usersList) {
         this.mUsersList = usersList;
         notifyDataSetChanged();
     }

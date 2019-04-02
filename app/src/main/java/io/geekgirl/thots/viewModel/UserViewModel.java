@@ -37,6 +37,7 @@ public class UserViewModel extends AndroidViewModel {
     private FirebaseQueryLiveData mLiveData;
     private List<User> mUsers = new ArrayList<>();
     private List<Geofence> mGeofences = new ArrayList<>();
+    MutableLiveData<List<User>> listMutableLiveData;
 
     private final MutableLiveData<Boolean> userUpdatedIsSuccessful = new MutableLiveData<>();
 
@@ -113,6 +114,34 @@ public class UserViewModel extends AndroidViewModel {
                 .child(user.getUid())
                 .setValue(user);
         uploadTask.addOnSuccessListener(o -> userUpdatedIsSuccessful.setValue(true));
+    }
+
+    public MutableLiveData<List<User>> getUserByUID(List<String> uids) {
+        MutableLiveData<List<User>> userMutableLiveData = new MutableLiveData<>();
+        for (String uid : uids) {
+            mFirebaseDatabase.getReference().child(Constants.USER_PATH)
+                    .child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        User user = dataSnapshot.getValue(User.class);
+                        user.setUid(uid);
+                        List<User> userList = userMutableLiveData.getValue();
+                        if (userList == null)
+                            userList = new ArrayList<>();
+                        userList.add(user);
+                        userMutableLiveData.postValue(userList);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+        return userMutableLiveData;
     }
 
     public void checkUser(User user) {
