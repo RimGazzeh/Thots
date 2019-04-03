@@ -270,7 +270,8 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
 
 
     private void onSuccessCnx(FirebaseUser firebaseUser) {
-        User user = new User(firebaseUser.getUid(), firebaseUser.getDisplayName(), firebaseUser.getEmail(), firebaseUser.getPhotoUrl().toString());
+        String url = firebaseUser.getPhotoUrl()!=null ? firebaseUser.getPhotoUrl().toString() : null;
+        User user = new User(firebaseUser.getUid(), firebaseUser.getDisplayName(), firebaseUser.getEmail(), url);
         Prefs.setPref(Prefs.USER_UID, firebaseUser.getUid(), activity);
         Prefs.setPref(Prefs.USER_EMAIL, firebaseUser.getEmail(), activity);
         userViewModel.checkUser(user);
