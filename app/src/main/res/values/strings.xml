@@ -35,6 +35,7 @@
     <string name="cancel">Cancel</string>
     <string name="info_msg_send_success">Sent Successfully</string>
     <string name="info_msg_send_error">Error Msg not Sent</string>
+    <string name="info_msg_empty">Msg Empty</string>
 
     <string name="geofence_not_available">Geofence service is not available now</string>
     <string name="geofence_too_many_geofences">Your app has registered too many geofences</string>

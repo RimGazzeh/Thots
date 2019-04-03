@@ -192,8 +192,36 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             case R.id.messages:
                 goToMessages();
                 break;
+            case R.id.nearby:
+                navController.popBackStack();
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem itemNearBy = menu.findItem(R.id.nearby);
+        MenuItem itemMsg = menu.findItem(R.id.messages);
+        MenuItem itemLogout = menu.findItem(R.id.logout);
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            switch (destination.getId()) {
+                case R.id.nearByUsersFragment: {
+                    itemNearBy.setVisible(false);
+                    itemMsg.setVisible(true);
+                    itemLogout.setVisible(true);
+                }
+                break;
+                case R.id.messageDetailFragment:
+                case R.id.MessageFragment: {
+                    itemNearBy.setVisible(true);
+                    itemMsg.setVisible(false);
+                    itemLogout.setVisible(false);
+                }
+                break;
+            }
+        });
+        return super.onPrepareOptionsMenu(menu);
     }
 
     private void goToMessages() {

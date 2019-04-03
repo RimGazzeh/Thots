@@ -8,6 +8,13 @@
         app:showAsAction="always"/>
 
     <item
+        android:id="@+id/nearby"
+        android:icon="@drawable/ic_nearby"
+        android:title="Messages"
+        android:visible="false"
+        app:showAsAction="always"/>
+
+    <item
         android:id="@+id/logout"
         android:title="Logout"
         />

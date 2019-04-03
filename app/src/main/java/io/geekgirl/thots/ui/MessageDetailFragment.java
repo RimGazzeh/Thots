@@ -62,6 +62,8 @@ public class MessageDetailFragment extends Fragment {
             String msg = mBinding.messageText.getText().toString();
             if (!msg.isEmpty()){
                 mMessageViewModel.sendMsg(mRecipient.getUid(),msg);
+            }else {
+                Toast.makeText(mActivity, mActivity.getString(R.string.info_msg_empty), Toast.LENGTH_SHORT).show();
             }
         });
         mMessageViewModel.getMessageUploadIsSuccessful().observe(this, isSent -> {

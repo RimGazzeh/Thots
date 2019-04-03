@@ -4,6 +4,8 @@ package io.geekgirl.thots.ui;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -114,6 +116,12 @@ public class NearByUsersFragment extends Fragment implements UsersAdapter.OnUerC
         } else {
             resultUI(true);
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.main_menu, menu);
     }
 
     @Override
