@@ -24,6 +24,15 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    signingConfigs {
+        release {
+            keyAlias 'thots_key'
+            keyPassword 'test123'
+            storeFile file('keystore-thots.jks')
+            storePassword 'test123'
+        }
+    }
 }
 
 dependencies {
