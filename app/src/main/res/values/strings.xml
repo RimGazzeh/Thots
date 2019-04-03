@@ -25,6 +25,7 @@
     <string name="permission_denied_explanation">Permission was denied, but is needed for core
         functionality.</string>
 
+    <string name="info_image_user">User profile image</string>
     <string name="info_message_error_network">Please check you internet connection</string>
     <string name="info_message_auth_failed">Authentication failed.</string>
     <string name="info_message_create_account_failed">Creation account failed.</string>
@@ -52,7 +53,7 @@
     <string name="geofence_transition_entered">Entered</string>
     <string name="geofence_transition_exited">Exited</string>
     <string name="unknown_geofence_transition">Unknown Transition</string>
-    <string name="appwidget_text">EXAMPLE</string>
+    <string name="appwidget_text">List messages</string>
     <string name="add_widget">Add widget</string>
     <string name="no_msgs">No messages</string>
     <string name="user_info">Info</string>

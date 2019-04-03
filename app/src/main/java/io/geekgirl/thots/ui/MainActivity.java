@@ -189,9 +189,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             case R.id.logout:
                 logout();
                 break;
-            case R.id.profile:
-                goToProfile();
-                break;
             case R.id.messages:
                 goToMessages();
                 break;
@@ -201,10 +198,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private void goToMessages() {
         navController.navigate(R.id.action_to_MessageFragment);
-    }
-
-    private void goToProfile() {
-        navController.navigate(R.id.action_to_profileFragment);
     }
 
     private void logout() {

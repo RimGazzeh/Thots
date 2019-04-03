@@ -31,6 +31,7 @@
                 android:id="@+id/email_login_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:focusable="true"
                 android:layout_gravity="center_vertical"
                 android:orientation="vertical">
 
@@ -44,6 +45,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/prompt_email"
                         android:inputType="textEmailAddress"
+                        android:nextFocusDown="@+id/password"
                         android:maxLines="1"
                         android:singleLine="true" />
 
@@ -62,6 +64,8 @@
                         android:imeActionLabel="@string/action_sign_in_short"
                         android:imeOptions="actionUnspecified"
                         android:inputType="textPassword"
+                        android:nextFocusUp="@+id/email"
+                        android:nextFocusDown="@+id/email_sign_in_button"
                         android:maxLines="1"
                         android:singleLine="true" />
 
@@ -73,6 +77,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:nextFocusUp="@+id/password"
+                    android:nextFocusDown="@+id/email_sign_up_button"
                     android:text="@string/action_sign_in"
                     android:textStyle="bold" />
 
@@ -81,6 +87,8 @@
                     style="?android:textAppearanceSmall"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:nextFocusUp="@+id/email_sign_in_button"
+                    android:nextFocusDown="@+id/google_sign_in_button"
                     android:layout_marginTop="16dp"
                     android:text="@string/action_sign_up"
                     android:textStyle="bold" />
@@ -90,6 +98,7 @@
                     android:layout_width="match_parent"
                     android:layout_marginTop="16dp"
                     android:layout_height="wrap_content"
+                    android:nextFocusUp="@+id/email_sign_up_button"
                     />
 
             </LinearLayout>

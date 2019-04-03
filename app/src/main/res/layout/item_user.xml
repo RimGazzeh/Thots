@@ -41,6 +41,7 @@
                 android:layout_width="84dp"
                 android:layout_height="84dp"
                 android:padding="10dp"
+                android:contentDescription="@string/info_image_user"
                 app:Url="@{TextUtils.isEmpty(user.photoUrl) ? @drawable/ic_face : user.photoUrl}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

@@ -16,9 +16,6 @@
         android:label="fragment_near_by_users"
         tools:layout="@layout/fragment_near_by_users" >
         <action
-            android:id="@+id/action_to_profileFragment"
-            app:destination="@id/profileFragment" />
-        <action
             android:id="@+id/action_to_MessageFragment"
             app:destination="@id/MessageFragment" />
         <action
@@ -28,11 +25,6 @@
             android:id="@+id/action_nearByUsersFragment_to_registrationActivity"
             app:destination="@id/registrationActivity" />
     </fragment>
-    <fragment
-        android:id="@+id/profileFragment"
-        android:name="io.geekgirl.thots.ui.ProfileFragment"
-        android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" ></fragment>
     <fragment
         android:id="@+id/messageDetailFragment"
         android:name="io.geekgirl.thots.ui.MessageDetailFragment"

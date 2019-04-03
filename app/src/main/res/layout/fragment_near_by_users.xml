@@ -6,7 +6,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.NearByUsersFragment">
+        tools:context=".ui.NearByUsersFragment"
+        android:focusable="true" >
 
         <TextView
             android:id="@+id/users_nearby_void"
@@ -38,7 +39,9 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/users_nearby_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></androidx.recyclerview.widget.RecyclerView>
+            android:layout_height="match_parent"
+            android:descendantFocusability="afterDescendants"
+            ></androidx.recyclerview.widget.RecyclerView>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

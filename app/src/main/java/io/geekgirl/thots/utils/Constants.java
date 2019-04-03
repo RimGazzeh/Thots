@@ -6,6 +6,7 @@ package io.geekgirl.thots.utils;
 public class Constants {
     public static final String SIGNED_USER = "signed_user";
     public static final String RECIPIENT_USER = "recipient_user";
+    public static final String MSG_LIST_WIDGET_EXTRA = "msg_list_widget";
     public static final int REQUEST_ACCESS_LOCATION = 123;
     public static final int GEOFENCE_RADIUS_IN_METER = 1000;
     public static final long GEOFENCE_EXPIRATION_IN_HOURS = 8;

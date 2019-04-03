@@ -6,6 +6,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:focusable="true"
         tools:context=".ui.MessageDetailFragment">
 
         <EditText
@@ -24,6 +25,7 @@
             android:hint="@string/message"
             android:inputType="textMultiLine"
             android:overScrollMode="always"
+            android:nextFocusDown="@+id/send_msg_bt"
             android:padding="15dp"
             android:scrollbarStyle="insideInset"
             android:scrollbars="vertical" />
@@ -35,6 +37,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_marginEnd="16dp"
+            android:nextFocusUp="@+id/message_text"
             android:layout_marginBottom="8dp"
             android:src="@drawable/ic_send"
             app:fabSize="normal" />
