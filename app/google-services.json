@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "770733425835",
+    "firebase_url": "https://thots-f341a.firebaseio.com",
+    "project_id": "thots-f341a",
+    "storage_bucket": "thots-f341a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:770733425835:android:b6c0687336e88202",
+        "android_client_info": {
+          "package_name": "io.geekgirl.thots"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "770733425835-o72dlfbnp9tlbbgg99jkhe9f60c1gane.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.geekgirl.thots",
+            "certificate_hash": "1580dc274a8e7769bff9aafb615bd7c83a884298"
+          }
+        },
+        {
+          "client_id": "770733425835-fq23vudvk1u5ob36u3eiq9ppk0gfplt0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEQSR8KijAAqBUAdlL3MKij22AIVefnS4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "770733425835-fq23vudvk1u5ob36u3eiq9ppk0gfplt0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
