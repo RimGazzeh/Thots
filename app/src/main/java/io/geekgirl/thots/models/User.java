@@ -25,6 +25,12 @@ public class User implements Parcelable, IUser {
         this.photoUrl = photoUrl;
     }
 
+    public User(String uid, String userName, String photoUrl) {
+        this.uid = uid;
+        this.userName = userName;
+        this.photoUrl = photoUrl;
+    }
+
     public String getUid() {
         return uid;
     }

@@ -16,15 +16,15 @@ import io.geekgirl.thots.models.IMessage;
  * Created by Rim Gazzah on 01/04/19
  */
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
-    private List<IMessage> mMessagesList;
-    private MessageAdapter.OnMessageClickListener mMessageClickListener;
+    private List<? extends IMessage> mMessagesList;
+    private OnMessageClickListener mMessageClickListener;
 
-    public void setMessagesList(List<IMessage> usersList) {
+    public void setMessagesList(List<? extends IMessage> usersList) {
         this.mMessagesList = usersList;
         notifyDataSetChanged();
     }
 
-    public void setOnUerClickListener(MessageAdapter.OnMessageClickListener onMessageClickListener) {
+    public void setOnMessageClickListener(OnMessageClickListener onMessageClickListener) {
         this.mMessageClickListener = onMessageClickListener;
     }
 
@@ -32,7 +32,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     @Override
     public MessageAdapter.MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ItemMessageBinding itemUserBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-                R.layout.item_user, parent, false);
+                R.layout.item_message, parent, false);
         return new MessageAdapter.MessageViewHolder(itemUserBinding);
     }
 

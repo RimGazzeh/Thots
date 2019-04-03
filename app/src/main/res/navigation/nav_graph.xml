@@ -2,42 +2,46 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:startDestination="@id/HomeFragment"
+    app:startDestination="@id/nearByUsersFragment"
     android:id="@+id/nav_graph">
 
     <fragment
-        android:id="@+id/HomeFragment"
-        android:name="io.geekgirl.thots.ui.HomeFragment"
+        android:id="@+id/MessageFragment"
+        android:name="io.geekgirl.thots.ui.MessageFragment"
         android:label="Blank"
-        tools:layout="@layout/fragment_home" >
-        <action
-            android:id="@+id/action_HomeFragment_to_messageDetailFragment"
-            app:destination="@id/messageDetailFragment" />
-        <action
-            android:id="@+id/action_HomeFragment_to_nearByUsersFragment"
-            app:destination="@id/nearByUsersFragment" />
-        <action
-            android:id="@+id/action_HomeFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/nearByUsersFragment"
         android:name="io.geekgirl.thots.ui.NearByUsersFragment"
         android:label="fragment_near_by_users"
         tools:layout="@layout/fragment_near_by_users" >
         <action
+            android:id="@+id/action_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_to_MessageFragment"
+            app:destination="@id/MessageFragment" />
+        <action
             android:id="@+id/action_nearByUsersFragment_to_messageDetailFragment"
             app:destination="@id/messageDetailFragment" />
+        <action
+            android:id="@+id/action_nearByUsersFragment_to_registrationActivity"
+            app:destination="@id/registrationActivity" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="io.geekgirl.thots.ui.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" ></fragment>
     <fragment
         android:id="@+id/messageDetailFragment"
         android:name="io.geekgirl.thots.ui.MessageDetailFragment"
         android:label="fragment_message_detail"
         tools:layout="@layout/fragment_message_detail" />
+    <activity
+        android:id="@+id/registrationActivity"
+        android:name="io.geekgirl.thots.ui.RegistrationActivity"
+        android:label="activity_registration"
+        tools:layout="@layout/activity_registration" />
 
 </navigation>

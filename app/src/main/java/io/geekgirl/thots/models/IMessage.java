@@ -5,8 +5,8 @@ package io.geekgirl.thots.models;
  */
 public interface IMessage {
     String getId();
-
     String getUidSender();
-
+    String getUidRecipient();
     String getMessage();
+    User getUser();
 }

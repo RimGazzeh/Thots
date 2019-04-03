@@ -11,13 +11,29 @@ public class Message implements IMessage, Parcelable {
     private String uidRecipient;
     private String uidSender;
     private String message;
+    private User user;
 
     public Message() {
     }
 
-    public Message(String uidRecipient, String uidSender, String message) {
+    public String getUidRecipient() {
+        return uidRecipient;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setUidRecipient(String uidRecipient) {
         this.uidRecipient = uidRecipient;
-        this.uidSender = uidSender;
+    }
+
+    public Message(String uidRecipient, String message) {
+        this.uidRecipient = uidRecipient;
         this.message = message;
     }
 
@@ -62,17 +78,21 @@ public class Message implements IMessage, Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.id);
+        dest.writeString(this.uidRecipient);
         dest.writeString(this.uidSender);
         dest.writeString(this.message);
+        dest.writeParcelable(this.user, flags);
     }
 
     protected Message(Parcel in) {
         this.id = in.readString();
+        this.uidRecipient = in.readString();
         this.uidSender = in.readString();
         this.message = in.readString();
+        this.user = in.readParcelable(User.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<Message> CREATOR = new Parcelable.Creator<Message>() {
+    public static final Creator<Message> CREATOR = new Creator<Message>() {
         @Override
         public Message createFromParcel(Parcel source) {
             return new Message(source);

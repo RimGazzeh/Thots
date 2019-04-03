@@ -144,6 +144,27 @@ public class UserViewModel extends AndroidViewModel {
         return userMutableLiveData;
     }
 
+    public MutableLiveData<User> getUserByUid(String uid) {
+        MutableLiveData<User> sender = new MutableLiveData<>();
+        mFirebaseDatabase.getReference().child(Constants.USER_PATH)
+                .child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    User user = dataSnapshot.getValue(User.class);
+                    user.setUid(uid);
+                    sender.postValue(user);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        return sender;
+    }
+
     public void checkUser(User user) {
         mFirebaseDatabase.getReference().child(Constants.USER_PATH)
                 .child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {

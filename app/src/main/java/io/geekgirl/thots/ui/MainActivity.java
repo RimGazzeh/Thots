@@ -9,6 +9,8 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -16,6 +18,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationServices;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -25,6 +28,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import io.geekgirl.thots.BuildConfig;
 import io.geekgirl.thots.R;
 import io.geekgirl.thots.manager.events.UserLocationEvent;
@@ -33,6 +38,7 @@ import io.geekgirl.thots.manager.geofence.GeofenceTransitionsJobIntentService;
 import io.geekgirl.thots.models.User;
 import io.geekgirl.thots.utils.Constants;
 import io.geekgirl.thots.utils.DebugLog;
+import io.geekgirl.thots.utils.Prefs;
 import io.geekgirl.thots.utils.Tools;
 import io.geekgirl.thots.viewModel.UserViewModel;
 
@@ -48,16 +54,24 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private User mUser;
     public BroadcastReceiver networkChangeReceiver;
     public Boolean isConnected;
+    private NavController navController;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         mGeofenceBuilder = new GeofenceBuilder(this);
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
     private void initGeoLocation() {
         userViewModel.getGeofencesLiveData().observe(this, geofences -> {
@@ -166,6 +180,38 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public void onEventBusListener(UserLocationEvent event) {
         DebugLog.d("UserLocationEvent triggered");
         userViewModel.updateLocation(event.getLocation());
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.logout:
+                logout();
+                break;
+            case R.id.profile:
+                goToProfile();
+                break;
+            case R.id.messages:
+                goToMessages();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void goToMessages() {
+        navController.navigate(R.id.action_to_MessageFragment);
+    }
+
+    private void goToProfile() {
+        navController.navigate(R.id.action_to_profileFragment);
+    }
+
+    private void logout() {
+        FirebaseAuth.getInstance().signOut();
+        Prefs.clear(this);
+        navController.navigate(R.id.action_nearByUsersFragment_to_registrationActivity);
+        finish();
     }
 
 
