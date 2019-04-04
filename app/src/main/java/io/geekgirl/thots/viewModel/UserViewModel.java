@@ -75,7 +75,7 @@ public class UserViewModel extends AndroidViewModel {
             for (DataSnapshot snap : dataSnapshot.getChildren()) {
                 User user = snap.getValue(User.class);
                 user.setUid(snap.getKey());
-                if (!user.getUid().equals(mUserUID)) {
+                if (!user.getUid().equals(mUserUID) && user.getLocation()!=null)  {
                     Geofence geofence = new Geofence.Builder().setRequestId(user.getUid()).setCircularRegion(
                             user.getLocation().getLatitude(),
                             user.getLocation().getLongitude(),

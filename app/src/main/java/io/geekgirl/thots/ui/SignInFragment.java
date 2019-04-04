@@ -37,6 +37,7 @@ import io.geekgirl.thots.R;
 import io.geekgirl.thots.databinding.FragmentSignInBinding;
 import io.geekgirl.thots.models.User;
 import io.geekgirl.thots.utils.Constants;
+import io.geekgirl.thots.utils.DebugLog;
 import io.geekgirl.thots.utils.Prefs;
 import io.geekgirl.thots.utils.Tools;
 import io.geekgirl.thots.viewModel.UserViewModel;
@@ -251,12 +252,12 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
                 .addOnCompleteListener(activity, task -> {
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "signInWithCredential:success");
+                        DebugLog.d( "signInWithCredential:success");
                         FirebaseUser user = mAuth.getCurrentUser();
                         onSuccessCnx(user);
                     } else {
                         // If sign in fails, display a message to the user.
-                        Log.w(TAG, "signInWithCredential:failure", task.getException());
+                        DebugLog.w( "signInWithCredential:failure" +  task.getException());
                         Toast.makeText(getActivity(), activity.getString(R.string.info_message_auth_failed),
                                 Toast.LENGTH_SHORT).show();
                     }

@@ -15,7 +15,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "770733425835-o72dlfbnp9tlbbgg99jkhe9f60c1gane.apps.googleusercontent.com",
+          "client_id": "770733425835-m65mc87ap1bpmpa4ltmsb9tdo11b7fbt.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "io.geekgirl.thots",
@@ -33,20 +33,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "770733425835-fq23vudvk1u5ob36u3eiq9ppk0gfplt0.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }

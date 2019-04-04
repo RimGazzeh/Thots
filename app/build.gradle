@@ -1,6 +1,17 @@
 apply plugin: 'com.android.application'
 
 android {
+
+
+    signingConfigs {
+        release {
+            keyAlias 'key_thot'
+            keyPassword 'test123'
+            storeFile file('keystore-thots.jks')
+            storePassword 'test123'
+        }
+    }
+
     compileSdkVersion project.ext.compileSdkVersion
     dataBinding {
         enabled = true
@@ -17,21 +28,13 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    signingConfigs {
-        release {
-            keyAlias 'thots_key'
-            keyPassword 'test123'
-            storeFile file('keystore-thots.jks')
-            storePassword 'test123'
-        }
     }
 }
 

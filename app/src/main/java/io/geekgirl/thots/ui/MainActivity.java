@@ -102,19 +102,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
+        mGoogleApiClient.connect();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        buildGoogleApiClient();
         if (!mGeofenceBuilder.checkPermissions()) {
             mGeofenceBuilder.requestPermissions();
         } else {
-            buildGoogleApiClient();
+
             mGeofenceBuilder.initLocation();
         }
         EventBus.getDefault().register(this);
-        mGoogleApiClient.connect();
     }
 
     @Override
